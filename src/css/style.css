@@ -78,6 +78,14 @@ main {
     padding-top: 5em;
 }
 
+.home-content .app-introduction {
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+
 .home-content h1 {
     font-size: 16rem;
     font-weight: bold;
@@ -92,6 +100,21 @@ main {
     color: #ffffff;
     width: 80%;
     max-width: 900px;
+}
+
+.home-content h2 {
+	font-size: 10rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 
+        0 0 30px #B66EE8;
+    margin-bottom: 1rem;
+}
+
+.home-content .quiz-Displayed {
+	display: flex;
+	flex-direction: column;
+    align-items: flex-start;
 }
 
 .quiz-form-button {
@@ -234,11 +257,12 @@ main {
 
 
 .quiz-content .quiz-BigContainer {
-    width: 100%px;
+    width: 100%;
     min-height: 100vh;
     padding-top: 80px;
     display: flex;
-    align-items: flex-start;
+	justify-content: center;
+    align-items: center;
     flex-direction: row;
 }
 
@@ -256,6 +280,7 @@ main {
 }
 
 
+
 .quiz-content .text-container {
     display: flex;
     flex-direction: column;
@@ -263,7 +288,14 @@ main {
     text-align: center;
 }
 
-
+.quiz-content .quiz-selection {
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+	padding-top: 80px;
+	gap:20px;
+}
 
 .quiz-content h1 {
     font-size: 4rem;
@@ -332,7 +364,109 @@ main {
 .hint-wrong {
     text-decoration: line-through;
     text-decoration-color: red;
-    text-decoration-thickness: 2px;
+}
+
+/*for submit question form*/
+.overlay-container {
+    display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.popup-box {
+	max-height: 80%;
+	overflow-y:auto;
+	background: #fff;
+	padding: 24px;
+	border-radius: 12px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+	width: 320px;
+	text-align: center;
+	opacity: 0;
+	transform: scale(0.8);
+	animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.btn-submit,
+.btn-close-popup {
+	padding: 12px 24px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-submit {
+    background-color: #964ABD;
+	color: #fff;
+}
+
+.btn-close-popup {
+	margin-top: 12px;
+	background-color: #964ABD;
+	color: #fff;
+}
+
+.btn-submit:hover,
+.btn-close-popup:hover {
+	background-color: #4caf50;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-label {
+	margin-bottom: 10px;
+	font-size: 16px;
+	color: #444;
+	text-align: left;
+}
+
+legend {
+  background-color: white;
+  color: #444;
+  font-size: 16px;
+  padding: 5px 10px;
+}
+
+
+.form-input {
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	font-size: 16px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/*for popup animation*/
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+		}
+	}
+
+
+.overlay-container.show {
+	display: flex;
+	opacity: 1;
 }
 
 /*PROFILE*/
