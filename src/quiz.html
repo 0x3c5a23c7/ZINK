@@ -28,8 +28,10 @@
                 <p>Explore our quiz...</p>
             </div>
             <div class="quiz-BigContainer">
+
+
                 <!-- Various quiz -->
-                <div class="quiz-SmallContainer">
+                <div id= "quiz-container" class="quiz-SmallContainer">
                     <canvas id="quizChart" style="display: none"></canvas>
                     <div id="quiz"></div>
                     <div id="quiz-result"></div>
@@ -39,7 +41,41 @@
                     <div id="token-earned" class="tokens-earned"></div>
                 </div>
             </div>
-
+			
+			<div id="popup-overlay" class= "overlay-container">
+				<div class="popup-box">
+					<h2 style="color: purple;">Submit a question!</h2>
+						<form class="form-container">
+							<label class= "form-label" for="question-name"> Question: </label>
+							<input class= "form-input" type="text" placeholder="Enter Your Question" id="question-name" name="question-name" required>
+							
+							<fieldset>
+								<legend> Possible Answers: </legend>
+								<label class= "form-label" for="possible-answers1">Answer n.1: </label> 
+								<input class= "form-input" type="text" placeholder="Enter The First Answer" id= "possible-answers1" name="possible-answers1" required>
+							
+								<label class= "form-label" for="possible-answers2">Answer n.2: </label> 
+								<input class= "form-input" type="text" placeholder="Enter The Second Answer" id= "possible-answers2" name="possible-answers2" required>
+								
+								<label class= "form-label" for="possible-answers3">Answer n.3: </label> 
+								<input class= "form-input" type="text" placeholder="Enter The Third Answer" id= "possible-answers3" name="possible-answers3" required>
+								
+								<label class= "form-label" for="possible-answers4">Answer n.4: </label> 
+								<input class= "form-input" type="text" placeholder="Enter The Fourth Answer" id= "possible-answers4" name="possible-answers4" required>
+							</fieldset>
+							<label class= "form-label" for="correct-answer">Correct Answer: </label>
+							<input class= "form-input" type="text" placeholder="Enter The Correct Answer" id="correct-answer" name="correct-answer" required>
+							
+							<label class= "form-label" for="difficulty-level">Difficulty: </label>
+							<input class= "form-input" type="number" min= "0.1" max= "0.6" step= "0.1" placeholder="Enter The Level Of Difficulty" id="difficulty-level" name="difficulty-level" required>
+						
+							<button id= "submitFormButton" class="btn-submit" type="submit"> Submit </button>
+					</form>
+					
+					<button class="btn-close-popup" onclick="togglePopup()"> Close </button>
+				</div>
+			</div>
+		</main>
         <script src="js/script.js"></script>
     </body>
 </html>
