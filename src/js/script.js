@@ -1,10 +1,5 @@
-let chartData = JSON.parse(sessionStorage.getItem('charData')) || [0,0,0,0,0,0,0];
-let userCoins = JSON.parse(sessionStorage.getItem("token")) || 0;
-let username = JSON.parse(sessionStorage.getItem('username')) || null;
-let password = JSON.parse(sessionStorage.getItem('password')) || null;
-
-// example quiz
-const quizData = [
+// questions shown if no quiz is selected in the homepage
+const quizIntro = [
     {
         question: 'What is the binary representation of the decimal number 5?',
         options: ['101', '110', '111', '100'],
@@ -100,6 +95,134 @@ const quizData = [
     }
 ];
 
+const algorithmsQuiz = [
+        {
+            question: 'What is the time complexity of binary search?',
+            options: ['O(n)', 'O(log n)', 'O(1)', 'O(n^2)'],
+            answer: 'O(log n)',
+            difficult: 0.5,
+        },
+        {
+            question: 'Which data structure follows the FIFO principle?',
+            options: ['Stack', 'Queue', 'Array', 'Linked List'],
+            answer: 'Queue',
+            difficult: 0.3,
+        },
+        {
+            question: 'What is a heap primarily used for?',
+            options: [
+                'Implementing priority queues',
+                'Sorting data linearly',
+                'Storing hash keys',
+                'Searching elements sequentially',
+            ],
+            answer: 'Implementing priority queues',
+            difficult: 0.4,
+        },
+        {
+            question: 'What traversal order is used in Depth First Search (DFS)?',
+            options: ['Breadth-First', 'Inorder', 'Preorder', 'Postorder'],
+            answer: 'Preorder',
+            difficult: 0.3,
+        },
+        {
+            question: 'Which sorting algorithm has the best average-case time complexity?',
+            options: ['Bubble Sort', 'Insertion Sort', 'Merge Sort', 'Selection Sort'],
+            answer: 'Merge Sort',
+            difficult: 0.4,
+        },
+        {
+            question: 'Which data structure can be used to implement a LRU cache?',
+            options: ['Queue', 'Stack', 'Hash Map and Linked List', 'Heap'],
+            answer: 'Hash Map and Linked List',
+            difficult: 0.5,
+        }
+];
+
+const operatingSystemsQuiz =  [
+        {
+            question: 'What is the main purpose of an operating system?',
+            options: [
+                'To run antivirus programs',
+                'To manage hardware and software resources',
+                'To compile programming code',
+                'To edit documents',
+            ],
+            answer: 'To manage hardware and software resources',
+            difficult: 0.2,
+        },
+        {
+            question: 'What does a process scheduler do?',
+            options: [
+                'Schedules emails to be sent',
+                'Allocates CPU time to processes',
+                'Manages file permissions',
+                'Handles disk formatting',
+            ],
+            answer: 'Allocates CPU time to processes',
+            difficult: 0.3,
+        },
+        {
+            question: 'Which of these is a type of process scheduling algorithm?',
+            options: ['Round Robin', 'Breadth First Search', 'Quick Sort', 'Mutex Lock'],
+            answer: 'Round Robin',
+            difficult: 0.4,
+        },
+        {
+            question: 'What is a deadlock in operating systems?',
+            options: [
+                'A process waiting indefinitely for resources',
+                'A security breach',
+                'A system crash due to memory overflow',
+                'An error in a program',
+            ],
+            answer: 'A process waiting indefinitely for resources',
+            difficult: 0.4,
+        },
+        {
+            question: 'What does a file system do?',
+            options: [
+                'Encrypts files',
+                'Organizes and stores files on disk',
+                'Executes programs in memory',
+                'Manages CPU processes',
+            ],
+            answer: 'Organizes and stores files on disk',
+            difficult: 0.2,
+        },
+        {
+            question: 'What is virtual memory used for?',
+            options: [
+                'Extending RAM with disk space',
+                'Storing the operating system kernel',
+                'Backing up files',
+                'Encrypting memory',
+            ],
+            answer: 'Extending RAM with disk space',
+            difficult: 0.3,
+        }
+];
+
+//session storage
+let chartData = JSON.parse(sessionStorage.getItem('charData')) || [0,0,0,0,0,0,0];
+let userCoins = JSON.parse(sessionStorage.getItem("token")) || 0;
+let username = JSON.parse(sessionStorage.getItem('username')) || null;
+let password = JSON.parse(sessionStorage.getItem('password')) || null;
+let quizSelect = JSON.parse(sessionStorage.getItem("quizSelected")) || "";  //when a selection quiz button is pressed in the homepage, this variable is set to either ASD or SO for displaying the appropriate questions
+let introQuiz = JSON.parse(sessionStorage.getItem("intro-quiz")) || quizIntro;
+let asdQuiz = JSON.parse(sessionStorage.getItem("asd-quiz")) || algorithmsQuiz;
+let soQuiz = JSON.parse(sessionStorage.getItem("so-quiz")) || operatingSystemsQuiz;
+
+
+
+//for displaying and selecting available quizzes 
+const showQuizButton = document.getElementById('quiz-showing');
+const introContainer = document.getElementById('appIntro');
+const selectionContainer = document.getElementById('quizDisplayed');
+const asdButton = document.getElementById('asdSelected');
+const soButton  = document.getElementById('soSelected');
+
+let quizData = null; //support variable for uploading one of the various quizzes
 
 //for quiz
 const quizContainer = document.getElementById('quiz');
@@ -121,6 +244,17 @@ const editButton   = document.getElementById("edit-button");
 const imageUpload  = document.getElementById("image-upload");
 const profileImage = document.getElementById("default-profile");
 const profileName  = document.getElementById("profile-name"); 
+
+
+//to handle the popup form
+const submitFormB = document.getElementById("submitFormButton");
+const question = document.getElementById("question-name");
+const correctAnsw = document.getElementById("correct-answer");
+const answer1 = document.getElementById("possible-answers1");
+const answer2 = document.getElementById("possible-answers2");
+const answer3 = document.getElementById("possible-answers3");
+const answer4 = document.getElementById("possible-answers4");
+const questDiff = document.getElementById("difficulty-level");
 
 let index = 0;
 let userScore = 0;
@@ -227,6 +361,17 @@ function displayResult() {
 
     quizResult.innerHTML = `You scored ${userScore} out of ${quizData.length}, coins earned: ${coinsEarned}!<br>`;
     coinsEarned = 0;
+	//quizSelect = "none";
+	//sessionStorage.setItem("quizSelected", JSON.stringify(quizSelect));
+	
+	const submitQuestion = document.createElement('button');
+	
+	submitQuestion.addEventListener('click', togglePopup);
+	
+	submitQuestion.textContent = 'Submit a question';
+	
+	quizResult.appendChild(submitQuestion);
+	
 }
 
 function displayIncorrectAnswer() {
@@ -260,17 +405,11 @@ function getHint() {
 
     if(indexIncorrect >= 0 && indexIncorrect < incorrectOptions.length) {
         if(questionInfo.difficult >= 0.1 && questionInfo.difficult <= 0.2 && userCoins >= 1) {
-			console.log("Difficulty: 0.1, 0.2 (-1) and userCoins before: ", userCoins);
             userCoins -= 1;
-			console.log("Difficulty: 0.1, 0.2 and userCoins before: ", userCoins);
         } else if(questionInfo.difficult >= 0.3 && questionInfo.difficult <= 0.4  && userCoins >= 2) {
-			console.log("Difficulty: 0.3, 0.4 (-2) and userCoins before: ", userCoins);
             userCoins -= 2;
-			console.log("Difficulty: 0.3, 0.4 and userCoins after: ", userCoins);
         } else if(questionInfo.difficult === 0.5 && userCoins >= 3) {
-			console.log("Difficulty: 0.5 (-3) and userCoins before: ", userCoins);
             userCoins -= 3;
-			console.log("Difficulty: 0.5 and userCoins: ", userCoins);
         } else {
 			alert("Not enough tokens!!");
 			return;
@@ -463,9 +602,70 @@ function customizeProfile() {
     });
 }
 
+//function to show available quizzes in the home page
+//this is done by giving a behaviour to the selectionButton 
+function showQuizzes() {
+	appIntro.style.display = "none";
+	
+	selectionContainer.style.display = "block";
+}
+
+//function for uploading one of the quizzes 
+function uploadQuiz() {
+	if( quizSelect === "ASD") {
+		quizData = asdQuiz;
+	} else if( quizSelect === "SO") {
+		quizData = soQuiz;
+	} else {
+		quizData = introQuiz;
+	}
+}
+
+/*function to show form for submitting questions to add to quizzes*/
+function togglePopup() {
+	const overlay = document.getElementById('popup-overlay');
+	overlay.classList.toggle('show');
+}
+
+/*function to handle input entries in form and add a new question to the quiz*/
+function handleForm() {
+	const newEntry =  {
+        question: question.value ,
+        options: [answer1.value,answer2.value ,answer3.value ,answer4.value ],
+        answer: correctAnsw.value,
+        difficult: parseFloat(questDiff.value),
+    };
+	
+	
+	
+	quizData.push(newEntry);
+	
+	if( quizSelect === "ASD") {
+		sessionStorage.setItem("asd-quiz", JSON.stringify(quizData));
+	} else if( quizSelect === "SO") {
+		sessionStorage.setItem("so-quiz", JSON.stringify(quizData));
+	} else {
+		sessionStorage.setItem("intro-quiz", JSON.stringify(quizData));
+	}
+}
+
 // handle content based on page id
 document.addEventListener("DOMContentLoaded", () => {
     const pageId = document.body.id;
+	
+	if(pageId == "home-page") {
+		showQuizButton.addEventListener('click',showQuizzes);
+		asdButton.addEventListener('click', () => {
+			quizSelect = "ASD";
+			sessionStorage.setItem("quizSelected", JSON.stringify(quizSelect));
+		});
+		
+		soButton.addEventListener('click', () => {
+			quizSelect = "SO";
+			sessionStorage.setItem("quizSelected", JSON.stringify(quizSelect));
+		});
+		
+	}
 
     if (pageId == "profile-page") {
         showUserChart();
@@ -474,6 +674,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (pageId == "quiz-page") {
+		submitFormB.addEventListener('click', handleForm);
+		uploadQuiz();
         showUserTokens();
         displayQuestion()
         getHintButton.addEventListener('click', getHint);
