@@ -8,7 +8,7 @@
         <link href="css/style.css" rel="stylesheet">
         <link href="img/simpleLogo.jpg" rel="icon">
     </head>
-    <body>
+    <body id="home-page">
         <!-- Navbar -->
         <header>
             <nav>
@@ -23,13 +23,27 @@
 
         <!-- Home -->
         <main class="home-content">
-            <h1>ZINK!</h1>
-            <p>ZINK! is a web app created with the aim of keeping your mind always trained. Take new quizzes every day and earn more and more tokens, climb the rankings and become the first!</p>
+		
+			<div id= "appIntro" class= "app-introduction">
+				<h1>ZINK!</h1>
+				<p>ZINK! is a web app created with the aim of keeping your mind always trained. Take new quizzes every day and earn more and more tokens, climb the rankings and become the first!</p>
 
+
+				<button id = "quiz-showing" class="quiz-form-button">QUIZ!</button>
+			
+			</div>
+		
+			<div id="quizDisplayed" class="quiz-Displayed" style="display: none" >
+				<h2> Select a quiz! </h2>
+				
+			
             <!-- goto quiz -->
             <form class="quiz-form" action="quiz.html" method="GET">
-                <button class="quiz-form-button">QUIZ!</button>
+				<button id="asdSelected" class="quiz-form-button" style= "margin-right: 40px;">ASD</button>
+				<button id="soSelected" class="quiz-form-button">SO</button>
             </form>
+			
+			</div>
         </main>
 
         <script src="js/script.js"></script>
