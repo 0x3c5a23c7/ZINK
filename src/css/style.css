@@ -255,10 +255,15 @@ main {
     flex-direction: column;
 }
 
+.quiz-result {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 
 .quiz-content .quiz-BigContainer {
     width: 100%;
-    min-height: 100vh;
     padding-top: 80px;
     display: flex;
 	justify-content: center;
